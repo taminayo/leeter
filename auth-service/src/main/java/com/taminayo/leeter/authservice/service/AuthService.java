@@ -42,15 +42,7 @@ public class AuthService {
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> validateToken(String token, String username) {
-        Boolean isValid = jwtUtil.validateToken(token.substring(7), username);
-        if (isValid) return new ResponseEntity<>("valid", HttpStatus.OK);
-        return new ResponseEntity<>("invalid", HttpStatus.BAD_REQUEST);
-    }
-
-    public ResponseEntity<String> getUsername(String token) {
-        String username = jwtUtil.extractUsername(token.substring(7));
-        if (username.isEmpty()) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        return new ResponseEntity<>(username, HttpStatus.OK);
+    public ResponseEntity<String> validateToken(String token) {
+        return jwtUtil.validateToken(token.substring(7));
     }
 }

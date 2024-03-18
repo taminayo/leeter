@@ -1,6 +1,7 @@
 # Leeter
 
 _!The reason why I build this application is that I want to practice to build microservices and also I need a good tool for categorizing my Leetcode-problems that I solved. "More readable, flexible and customizable service for Leetcode-problems" is the goal for Leeter. This service is not enough for that. Even if it is a lack of frontend, not fully functional as I expected, I'll improve the quality as I can._
+
 Leeter is a web-backend-service where users can manage their Leetcode-Problems by categorizing them. The service is built using a microservices architecture by Spring-Boot. This Service consists of five services: api-gateway, service-registry, problem-service, category-service, and auth-service.
 
 Leetcode provides the access to it's contents by using graphql.
@@ -43,8 +44,5 @@ Auth-service is constructed by JWT. Whenever the service needs authorization, an
     - generateToken - User can get JWT.
     ![image info](./images/auth-service-generateToken.png)
 
-    - validateToken - User can check whether JWT is valid or not.
+    - validateToken - User can check whether JWT is valid or not. This method provides repsonse containing username. Therefore, by calling this service, category-service can extract username and get validation all at once.
     ![image info](./images/auth-service-validateToken.png)
-
-    - getUsername - For other services, username should be extracted from Httpheader. This method is often called by category-service. It works as authorizer and mapper that maps user to the correct _categorydb_.
-

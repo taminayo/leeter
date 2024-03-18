@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient("AUTH-SERVICE")
 public interface AuthInterface {
 
-    @GetMapping("auth/getUsername")
-    public ResponseEntity<String> getUsername(@RequestHeader("Authorization") String token);
+    @GetMapping("auth/validate")
+    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String token);
 }

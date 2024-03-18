@@ -38,12 +38,7 @@ public class AuthController {
     }
 
     @GetMapping("validate")
-    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String token, @RequestParam("username") String username) {
-        return authService.validateToken(token, username);
-    }
-
-    @GetMapping("getUsername")
-    public ResponseEntity<String> getUsername(@RequestHeader("Authorization") String token) {
-        return authService.getUsername(token);
+    public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String token) {
+        return authService.validateToken(token);
     }
 }

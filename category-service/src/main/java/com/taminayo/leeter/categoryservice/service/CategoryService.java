@@ -25,9 +25,9 @@ public class CategoryService {
     private final AuthInterface authInterface;
 
     public ResponseEntity<List<ProblemResponse>> getProblemByType(String token, String type) {
-        ResponseEntity<String> userResponse = authInterface.getUsername(token);
-        if (userResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        List<Category> categories = categoryRepository.findByUsername(userResponse.getBody());
+        ResponseEntity<String> response = authInterface.validateToken(token);
+        if (response.getStatusCode() == HttpStatus.UNAUTHORIZED) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        List<Category> categories = categoryRepository.findByUsername(response.getBody());
         if (categories.isEmpty()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
@@ -49,8 +49,8 @@ public class CategoryService {
     }
 
     public ResponseEntity<String> setProblemByType(String token, String type, List<ProblemRequest> problemRequests) {
-        ResponseEntity<String> userResponse = authInterface.getUsername(token);
-        if (userResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) return userResponse;
+        ResponseEntity<String> response = authInterface.validateToken(token);
+        if (response.getStatusCode() == HttpStatus.UNAUTHORIZED) return response;
         List<ProblemResponse> problemResponses = problemInterface.getProblemByRequest(problemRequests).getBody();
         if (problemResponses.isEmpty()) return new ResponseEntity<>("invalid format", HttpStatus.BAD_REQUEST);
         List<Integer> problems = new ArrayList<>();
@@ -60,7 +60,7 @@ public class CategoryService {
         Category category = Category.builder()
                 .type(type)
                 .problems(problems)
-                .username(userResponse.getBody())
+                .username(response.getBody())
                 .build();
         categoryRepository.save(category);
         return new ResponseEntity<>("success", HttpStatus.OK);

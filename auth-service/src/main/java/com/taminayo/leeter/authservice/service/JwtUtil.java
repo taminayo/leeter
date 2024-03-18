@@ -7,6 +7,8 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -34,9 +36,13 @@ public class JwtUtil {
         return createToken(claims, username);
     }
 
-    public Boolean validateToken(String token, String username) {
-        String extractedUsername = extractUsername(token);
-        return (username.equals(extractedUsername) && !isTokenExpired(token));
+    public ResponseEntity<String> validateToken(String token) {
+        try {
+            Claims claims = extractAllClaims(token);
+            return new ResponseEntity<>(claims.getSubject(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     private Boolean isTokenExpired(String token) {

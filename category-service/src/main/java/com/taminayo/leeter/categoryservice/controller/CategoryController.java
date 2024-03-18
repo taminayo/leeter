@@ -18,10 +18,11 @@ public class CategoryController {
 
     @GetMapping("get/{type}")
     public ResponseEntity<List<ProblemResponse>> getProblemByType(@RequestHeader("Authorization") String token, @PathVariable("type") String type) {
+        System.out.println("hi");
         return categoryService.getProblemByType(token, type);
     }
 
-    @PostMapping("{type}")
+    @PostMapping("set/{type}")
     public ResponseEntity<String> setProblemByType(@RequestHeader("Authorization") String token, @PathVariable("type") String type, @RequestBody List<ProblemRequest> problemRequests) {
         return categoryService.setProblemByType(token, type, problemRequests);
     }
